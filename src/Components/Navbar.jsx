@@ -21,7 +21,7 @@ const Navbar = () => {
           </div>
           <div className="ivider divider-horizontal divider-start"></div>
           <div className="auto-btn flex items-center justify-center gap-5">
-            <Link className="text-purple-600" href={"/signin"}>
+            <Link className="text-purple-600" href={"/login"}>
               Sign In
             </Link>
             <Link
