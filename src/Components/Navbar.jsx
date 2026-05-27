@@ -1,9 +1,24 @@
 "use client";
 import React from "react";
-import logoImg from "../../public/logo.png";
 import Link from "next/link";
+import { signOut, useSession } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+  const user = session?.user;
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("\login");
+        },
+      },
+    });
+  };
   return (
     <div className="bg-[#0a0a0a] text-white">
       <div className=" flex items-center justify-between">
@@ -20,16 +35,27 @@ const Navbar = () => {
             <Link href={"/pricing"}>Pricing</Link>
           </div>
           <div className="ivider divider-horizontal divider-start"></div>
-          <div className="auto-btn flex items-center justify-center gap-5">
-            <Link className="text-purple-600" href={"/login"}>
-              Sign In
-            </Link>
-            <Link
-              className="bg-white px-8 py-3 rounded-2xl text-black"
-              href={"/signup"}
-            >
-              Get Started
-            </Link>
+          <div>
+            {user ? (
+              <div className="auto-btn flex items-center justify-center gap-2">
+                <h1>Hi,{user.name}</h1>
+                <Button onClick={handleSignOut} variant="danger">
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <div className="auto-btn flex items-center justify-center gap-5">
+                <Link className="text-purple-600" href={"/login"}>
+                  Sign In
+                </Link>
+                <Link
+                  className="bg-white px-8 py-3 rounded-2xl text-black"
+                  href={"/signup"}
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
